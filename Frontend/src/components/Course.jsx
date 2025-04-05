@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Cards from "./Cards";
-import list from "../../public/list.json";
 import {Link} from "react-router-dom"
+import axios from "axios"
 function Course() {
+  const [book,setBook] = useState([])
+  useEffect(()=>{
+    const getBook = async () => {
+      try {
+      const response  = await axios.get("http://localhost:4001/book")
+      console.log(response.data)  
+      setBook(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getBook()
+  },[])
   return (
     <>
       <div className="max-w-screen-2xl container mx-auto md:px-20 px-4">
@@ -28,7 +41,7 @@ function Course() {
 
         {/* 📌 Updated grid for wider cards */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
-          {list.map((item) => (
+          {book.map((item) => (
             <Cards key={item.id} item={item} />
           ))}
         </div>
